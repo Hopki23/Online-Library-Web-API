@@ -9,6 +9,8 @@
     using Online_Library_Api.Contracts;
     using Online_Library_Api.Data;
     using Online_Library_Api.Data.Entities;
+    using Online_Library_Api.DTOs.Author;
+    using Online_Library_Api.DTOs.Book;
 
     public class AuthorService : IAuthorService
     {
@@ -19,12 +21,21 @@
             this.context = context;
         }
 
-        public async Task<Author> CreateAsync(Author author)
+        public async Task<Author> CreateAsync(CreateAuthorDto author)
         {
-            await this.context.Authors.AddAsync(author);
+            var createdAuthor = new Author()
+            {
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                Age = author.Age,
+                ImageUrl = author.ImageUrl,
+                Books = new List<Book>()
+            };
+
+            await this.context.Authors.AddAsync(createdAuthor);
             await this.context.SaveChangesAsync();
 
-            return author;
+            return createdAuthor;
         }
 
         public async Task DeleteAsync(Guid id)
@@ -42,11 +53,37 @@
 
         public async Task<IEnumerable<Author>> GetAllAuthorsAsync() => await this.context.Authors.ToListAsync();
 
-        public async Task<Author> GetByIdAsync(Guid id)
+        public async Task<AuthorWithBooksDto> GetByIdAsync(Guid id)
         {
-            return await this.context.Authors
+            var author = await context.Authors
                 .Include(x => x.Books)
                 .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (author == null)
+            {
+                return null;
+            }
+
+            var authorDTO = new AuthorWithBooksDto
+            {
+                Id = author.Id,
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                Age = author.Age,
+                ImageUrl = author.ImageUrl,
+                Books = author.Books.Select(book => new BookDto
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    DateOfPublish = book.DateOfPublish,
+                    Resume = book.Resume,
+                    GenreName = book.GenreName,
+                    ImageUrl = book.ImageUrl,
+                    Likes = book.Likes
+                }).ToList()
+            };
+
+            return authorDTO;
         }
 
         public async Task<Author> UpdateAsync(Author author, Guid id)

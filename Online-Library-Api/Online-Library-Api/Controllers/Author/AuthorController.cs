@@ -4,6 +4,7 @@
 
     using Online_Library_Api.Contracts;
     using Online_Library_Api.Data.Entities;
+    using Online_Library_Api.DTOs.Author;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -39,7 +40,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Author author)
+        public async Task<IActionResult> Create(CreateAuthorDto author)
         {
             if (!ModelState.IsValid)
             {
@@ -66,10 +67,17 @@
             return Ok();
         }
 
-        [HttpPatch]
+        [HttpPatch("{id:Guid}")]
         public async Task<IActionResult> Update(Author author, Guid id)
         {
-            await this.service.UpdateAsync(author, id);
+            try
+            {
+                await this.service.UpdateAsync(author, id);
+            }
+            catch (Exception)
+            {
+                return NotFound("Author not found.");
+            }
 
             return Ok(author);
         }

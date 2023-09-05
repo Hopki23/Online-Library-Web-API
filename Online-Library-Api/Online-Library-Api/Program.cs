@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Online_Library_Api.Contracts;
 using Online_Library_Api.Data;
 using Online_Library_Api.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,17 @@ builder.Services.AddDbContext<WebApiContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllers();
+    //.AddJsonOptions(options =>
+    //{
+    //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    //    //options.JsonSerializerOptions.MaxDepth = 64;
+    //});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 var app = builder.Build();
 
