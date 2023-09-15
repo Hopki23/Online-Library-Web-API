@@ -29,7 +29,8 @@
                 GenreName = book.GenreName,
                 ImageUrl = book.ImageUrl,
                 Likes = book.Likes,
-                AuthorId = book.AuthorId
+                AuthorId = book.AuthorId,
+                ApplicationUserId = book.UserId
             };
 
             await this.context.Books.AddAsync(createdBook);

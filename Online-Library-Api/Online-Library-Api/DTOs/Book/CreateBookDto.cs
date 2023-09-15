@@ -16,5 +16,7 @@
         public int Likes { get; set; }
         public Guid AuthorId { get; set; }
 
+        [Required]
+        public string UserId { get; set; } = null!;
     }
 }

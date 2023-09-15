@@ -4,7 +4,6 @@
 
     using Online_Library_Api.Contracts;
     using Online_Library_Api.DTOs.Book;
-    using Online_Library_Api.Data.Entities;
 
 
     [Route("api/[controller]")]
