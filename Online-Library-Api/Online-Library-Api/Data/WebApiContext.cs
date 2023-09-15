@@ -1,11 +1,14 @@
 ﻿namespace Online_Library_Api.Data
 {
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
     using Online_Library_Api.Data.Entities;
-    public class WebApiContext : DbContext
+    using Online_Library_Api.Data.Entities.User;
+
+    public class WebApiContext : IdentityDbContext<ApplicationUser>
     {
-        public WebApiContext(DbContextOptions options) 
+        public WebApiContext(DbContextOptions<WebApiContext> options) 
             : base(options)
         {
         }

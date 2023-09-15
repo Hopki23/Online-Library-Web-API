@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_Library_Api.Data;
 
@@ -11,9 +12,10 @@ using Online_Library_Api.Data;
 namespace Online_Library_Api.Migrations
 {
     [DbContext(typeof(WebApiContext))]
-    partial class WebApiContextModelSnapshot : ModelSnapshot
+    [Migration("20230915115044_IdentityAdded")]
+    partial class IdentityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

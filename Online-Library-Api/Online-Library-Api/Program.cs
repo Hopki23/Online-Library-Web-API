@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using Online_Library_Api.Contracts;
 using Online_Library_Api.Data;
+using Online_Library_Api.Data.Entities.User;
 using Online_Library_Api.Services;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,16 +13,20 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<WebApiContext>(options =>
    options.UseSqlServer(connectionString));
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<WebApiContext>();
+
 // Add services to the container.
 builder.Services.AddControllers();
-    //.AddJsonOptions(options =>
-    //{
-    //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    //    //options.JsonSerializerOptions.MaxDepth = 64;
-    //});
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
+{
+    build.WithOrigins("http://localhost:3001").AllowAnyMethod().AllowAnyHeader();
+}));
+
 
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IBookService, BookService>();
@@ -33,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("corspolicy");
 
 app.UseHttpsRedirection();
 

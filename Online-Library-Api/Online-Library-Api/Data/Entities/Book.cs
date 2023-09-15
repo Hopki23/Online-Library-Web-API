@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+
+    using Online_Library_Api.Data.Entities.User;
     public class Book
     {
         [Key]
@@ -22,5 +24,9 @@
         [ForeignKey(nameof(Author))]
         public Guid AuthorId { get; set; }
         public Author Author { get; set; } = null!;
+
+        [ForeignKey(nameof(ApplicationUser))]
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
