@@ -26,6 +26,7 @@
             this.config = config;
         }
 
+        [Route("Register")]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUser)
         {
@@ -64,6 +65,34 @@
             return BadRequest(result.Errors);
         }
 
+        [Route("Login")]
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid credentials");
+            }
+
+            var user = await this.userManager.FindByEmailAsync(loginUser.Email);
+
+            if (user == null)
+            {
+                return BadRequest("Invalid credentials");
+            }
+
+            var result = await this.userManager.CheckPasswordAsync(user, loginUser.Password);
+
+            if (!result)
+            {
+                return BadRequest("Invalid credential");
+            }
+
+            var jwtToken = GenerateJwtToken(user);
+
+            return Ok(new { Token = jwtToken, Id = user.Id, Username = user.UserName, Email = user.Email});
+        }
+
         private string GenerateJwtToken(ApplicationUser user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -74,11 +103,12 @@
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("Id", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUniversalTime().ToString())
+                    new Claim(ClaimTypes.Name, user.Id),
+                    //new Claim("Id", user.Id),
+                    //new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    //new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    //new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUniversalTime().ToString())
                 }),
 
                 Expires = DateTime.UtcNow.AddHours(1),

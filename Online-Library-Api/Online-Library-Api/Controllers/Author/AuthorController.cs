@@ -1,5 +1,7 @@
 ﻿namespace Online_Library_Api.Controllers.Author
 {
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using Online_Library_Api.Contracts;
@@ -17,6 +19,7 @@
             this.service = service;
         }
 
+        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

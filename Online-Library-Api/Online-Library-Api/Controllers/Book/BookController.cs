@@ -1,5 +1,6 @@
 ﻿namespace Online_Library_Api.Controllers.Book
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using Online_Library_Api.Contracts;
