@@ -39,6 +39,7 @@
             return Ok(book);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateBook([FromBody]CreateBookDTO book)
         {
@@ -52,6 +53,7 @@
             return CreatedAtAction(nameof(GetById), new { id = createdBook.Id }, createdBook);
         }
 
+        [Authorize]
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -67,6 +69,7 @@
             return Ok();
         }
 
+        [Authorize]
         [HttpPatch("{id:Guid}")]
         public async Task<IActionResult> Update([FromBody] UpdateBookDto book, Guid id)
         {

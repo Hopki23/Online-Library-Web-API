@@ -13,7 +13,7 @@
         [Required]
         public string GenreName { get; set; } = null!;
         public string? ImageUrl { get; set; }
-        public int Likes { get; set; }
+        //public int Likes { get; set; }
         public Guid AuthorId { get; set; }
 
         [Required]

@@ -19,7 +19,6 @@
             this.service = service;
         }
 
-        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -42,6 +41,7 @@
             return Ok(author);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateAuthorDto author)
         {
@@ -55,6 +55,7 @@
             return CreatedAtAction(nameof(GetById), new { id = createdAuthor.Id }, createdAuthor);
         }
 
+        [Authorize]
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -70,6 +71,7 @@
             return Ok();
         }
 
+        [Authorize]
         [HttpPatch("{id:Guid}")]
         public async Task<IActionResult> Update(Author author, Guid id)
         {

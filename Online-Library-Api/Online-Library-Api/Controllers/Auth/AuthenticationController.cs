@@ -98,6 +98,8 @@
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
             var key = Encoding.UTF8.GetBytes(this.config.GetValue<string>("JwtConfig:Key"));
+            var issuer = this.config.GetValue<string>("JwtConfig:Issuer");
+            var audience = this.config.GetValue<string>("JwtConfig:Audience");
 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
@@ -112,6 +114,8 @@
                 }),
 
                 Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = issuer,
+                Audience = audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
 

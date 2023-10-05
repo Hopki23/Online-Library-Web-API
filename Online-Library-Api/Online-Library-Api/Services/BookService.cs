@@ -28,7 +28,7 @@
                 Resume = book.Resume,
                 GenreName = book.GenreName,
                 ImageUrl = book.ImageUrl,
-                Likes = book.Likes,
+                //Likes = book.Likes,
                 AuthorId = book.AuthorId,
                 ApplicationUserId = book.UserId
             };
@@ -101,7 +101,7 @@
             result.DateOfPublish = book.DateOfPublish;
             result.Resume = book.Resume;
             result.GenreName = book.GenreName;
-            result.Likes = book.Likes;
+            //result.Likes = book.Likes;
             result.ImageUrl = book.ImageUrl;
             result.AuthorId = book.AuthorId;
 
