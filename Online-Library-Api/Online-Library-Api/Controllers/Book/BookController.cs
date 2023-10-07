@@ -18,7 +18,15 @@
             this.service = service;
         }
 
-        [HttpGet]
+        [HttpGet("most-liked")]
+        public async Task<IActionResult> GetMostLikedBooks()
+        {
+            var books = await this.service.GetMostLikedBooksAsync();
+
+            return Ok(books);
+        }
+
+        [HttpGet("all-books")]
         public async Task<IActionResult> GetAllBooks()
         {
             var books = await this.service.GetAllBooksAsync();

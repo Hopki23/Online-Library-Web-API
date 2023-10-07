@@ -87,6 +87,14 @@
             return bookDto;
         }
 
+        public async Task<IEnumerable<Book>> GetMostLikedBooksAsync()
+        {
+            return await this.context.Books
+                .OrderBy(x => x.Likes)
+                .Take(3)
+                .ToListAsync();
+        }
+
         public async Task<Book> UpdateAsync(UpdateBookDto book, Guid id)
         {
             var result = await this.context.Books
