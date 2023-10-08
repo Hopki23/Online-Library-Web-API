@@ -12,5 +12,6 @@
         public string ImageUrl { get; set; }
         public int Likes { get; set; }
         public BaseAuthorDto Author { get; set; }
+        public string CreatorId { get; set; }
     }
 }

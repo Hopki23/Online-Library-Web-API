@@ -60,6 +60,10 @@
                .Include(x => x.Author)
                .FirstOrDefaultAsync(x => x.Id == id);
 
+            var creator = await this.context.Users
+                .Where(u => u.Id == book.ApplicationUserId)
+                .FirstOrDefaultAsync();
+
             if (book == null)
             {
                 return null;
@@ -74,6 +78,7 @@
                 GenreName = book.GenreName,
                 ImageUrl = book.ImageUrl,
                 Likes = book.Likes,
+                CreatorId = creator!.Id,
                 Author = new BaseAuthorDto()
                 {
                     Id = book.Author.Id,
