@@ -28,7 +28,6 @@
                 Resume = book.Resume,
                 GenreName = book.GenreName,
                 ImageUrl = book.ImageUrl,
-                //Likes = book.Likes,
                 AuthorId = book.AuthorId,
                 ApplicationUserId = book.UserId
             };
@@ -45,7 +44,7 @@
 
             if (book == null)
             {
-                throw new ArgumentException();
+                throw new Exception("Book not found");
             }
 
             this.context.Books.Remove(book);
@@ -66,7 +65,7 @@
 
             if (book == null)
             {
-                return null;
+                throw new Exception("Book not found");
             }
 
             var bookDto = new BookDto()
@@ -100,6 +99,42 @@
                 .ToListAsync();
         }
 
+        public async Task LikeBookAsync(Guid bookId, string userId)
+        {
+            var user = await this.context.Users
+                .Where(x => x.Id == userId)
+                .Include(x => x.LikedBooks)
+                .FirstOrDefaultAsync();
+
+            var book = await this.context.Books
+                    .Where(x => x.Id == bookId)
+                    .FirstOrDefaultAsync();
+
+            if (book == null)
+            {
+                throw new Exception("Book not found");
+            }
+
+            var userLikedBook = user.LikedBooks.FirstOrDefault(ub => ub.BookId == bookId);
+
+            if (userLikedBook == null)
+            {
+                user.LikedBooks.Add(new UserLiked
+                {
+                    ApplicationUser = user,
+                    Book = book
+                });
+
+                book.Likes += 1;
+
+                await this.context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Book is already liked");
+            }
+        }
+
         public async Task<Book> UpdateAsync(UpdateBookDto book, Guid id)
         {
             var result = await this.context.Books
@@ -107,14 +142,13 @@
 
             if (result == null)
             {
-                throw new ArgumentException();
+                throw new Exception("Book not found");
             }
 
             result.Title = book.Title;
             result.DateOfPublish = book.DateOfPublish;
             result.Resume = book.Resume;
             result.GenreName = book.GenreName;
-            //result.Likes = book.Likes;
             result.ImageUrl = book.ImageUrl;
             result.AuthorId = book.AuthorId;
 

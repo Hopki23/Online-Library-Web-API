@@ -10,6 +10,7 @@
         Task<Book> CreateAsync(CreateBookDTO book);
         Task<BookDto> GetByIdAsync(Guid id);
         Task DeleteAsync(Guid id);
+        Task LikeBookAsync(Guid bookId, string userId);
         Task<Book> UpdateAsync(UpdateBookDto book, Guid id);
     }
 }

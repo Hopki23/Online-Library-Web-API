@@ -8,7 +8,7 @@
 
     public class WebApiContext : IdentityDbContext<ApplicationUser>
     {
-        public WebApiContext(DbContextOptions<WebApiContext> options) 
+        public WebApiContext(DbContextOptions<WebApiContext> options)
             : base(options)
         {
         }
@@ -19,6 +19,22 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserLiked>()
+                .HasKey(ul => new { ul.ApplicationUserId, ul.BookId });
+
+            modelBuilder.Entity<UserLiked>()
+                .HasOne(ul => ul.ApplicationUser)
+                .WithMany(u => u.LikedBooks)
+                .HasForeignKey(ul => ul.ApplicationUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserLiked>()
+                .HasOne(ul => ul.Book)
+                .WithMany(b => b.LikedByUsers)
+                .HasForeignKey(ul => ul.BookId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

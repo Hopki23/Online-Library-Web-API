@@ -93,5 +93,25 @@
 
             return NoContent();
         }
+
+        [Authorize]
+        [HttpPost("like")]
+        public async Task<IActionResult> LikeBookAsync([FromBody] LikeBookDto bookDto)
+        {
+            try
+            {
+                await this.service.LikeBookAsync(bookDto.BookId, bookDto.UserId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Book is already liked")
+                {
+                    return BadRequest(new { message = ex.Message });
+                }
+
+                return StatusCode(500, "An error occurred while liking the book.");
+            }
+        }
     }
 }

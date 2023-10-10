@@ -28,5 +28,6 @@
         [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+        public ICollection<UserLiked> LikedByUsers { get; set; } = new HashSet<UserLiked>();
     }
 }
